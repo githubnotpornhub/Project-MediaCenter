@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="media.dao.HomeMapper">
+
+    <select id="getPhotoView" resultType="Media">
+        select *
+        from medias
+        where Mediatype = "P"
+        order by uploaddate desc
+    </select>
+
+    <!--首页展示最新的图片-->
+    <select id="getLatestPhoto" resultType="Media">
+        select *
+        from medias
+        where Mediatype = "P"
+        order by uploaddate desc limit 4
+    </select>
+    <!--首页展示最新的视频-->
+    <select id="getLatestVideo" resultType="Media">
+        select *
+        from medias
+        where Mediatype = "V"
+        order by uploaddate desc limit 3
+    </select>
+    <!--展示更多的图片-->
+    <select id="getAllPhoto" resultType="Media">
+        select m.*, t.typename
+        from medias m
+                 join types t on m.typeid = t.typeid
+        where Mediatype = "P"
+        order by m.uploaddate desc
+    </select>
+    <!--展示更多的视频-->
+    <select id="getAllVideo" resultType="Media">
+        select m.*, t.typename
+        from medias m
+                 join types t on m.typeid = t.typeid
+        where Mediatype = "V"
+        order by m.uploaddate desc
+    </select>
+    <!--获取所有分组-->
+    <select id="getTypeList" resultType="Type">
+        select *
+        from types
+    </select>
+    <!--获取分组统计信息-->
+    <select id="getStatistic" resultType="Map">
+        select t.typename,
+               (select count(*) from medias me where me.mediatype = 'P' and me.typeid = m.typeid)    pnum,
+               (select count(*) from medias med where med.mediatype = 'V' and med.typeid = m.typeid) vnum
+        from medias m
+                 right join types t on m.typeid = t.typeid
+        group by t.typename
+    </select>
+
+    <select id="getSearchList" resultType="Media">
+        select *
+        from medias
+        where Mediatype = "P"
+          and mediatitle like concat("%", #{username,jdbcType=VARCHAR}, "%")
+        order by uploaddate desc
+    </select>
+</mapper>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="media.dao.MediaMapper">
+    <!--在管理页面展示所有资源的信息-->
+    <select id="getMediaList" resultType="Media">
+        select m.*, t.typename
+        from medias m
+                 join types t on m.typeid = t.typeid
+        order by m.uploaddate desc
+    </select>
+    <!--上传资源文件-->
+    <insert id="addMedia">
+        insert into medias (mediatitle, typeid, uploaddate, description, Mediatype, mediaurl)
+        values (#{mediatitle}, #{typeid}, #{uploaddate,jdbcType=DATE}, #{description}, #{Mediatype}, #{mediaurl})
+    </insert>
+    <!--查询位于共同分组的图片-->
+    <select id="getMediaByGroup" resultType="Media">
+        select *
+        from medias
+        where typeid = #{typeid}
+          and Mediatype = "P"
+        order by uploaddate desc
+    </select>
+    <!--在管理页面删除资源-->
+    <delete id="deleteMedia">
+        delete
+        from medias
+        where mediatitle = #{mediatitle}
+    </delete>
+</mapper>

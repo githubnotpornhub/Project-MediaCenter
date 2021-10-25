@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="media.dao.TypeMapper">
+    <!--获取所有资源分组-->
+    <select id="getTypelist" resultType="Type">
+        select *
+        from types
+    </select>
+    <!--根据分组名查询分组的ID-->
+    <select id="getTypeId" resultType="Type">
+        select *
+        from types
+        where typename = #{typename}
+    </select>
+    <!--    <delete id="deleteUser" >-->
+    <!--        delete from user where id =#{id}-->
+    <!--    </delete>-->
+    <!--    <insert id="addUser" >-->
+    <!--        insert into user(id,name,age,sex)values(#{id},#{name},#{age},#{sex})-->
+    <!--    </insert>-->
+</mapper>
